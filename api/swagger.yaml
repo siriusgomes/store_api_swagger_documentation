@@ -1,57 +1,261 @@
----
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "**This is the documentation for the \"Store API\" project. **\nIt\
-    \ was created and hosted in Heroku by Sírius Gomes\n\n\nFind source code of this\
-    \ API [here](https://github.com/siriusgomes/siriusgomes-cs497-fall-2015)\n"
-  version: "1.0.0"
-  title: "Store API on Heroku for CS497 - Enterprise Web Development"
-host: "siriusgomes-cs497-api.herokuapp.com"
-basePath: "/"
+  version: 1.0.0
+  title: Store API on Heroku for CS497 - Enterprise Web Development
+  description: >
+    **This is the documentation for the "Store API" project. **
+
+    It was created and hosted in Heroku by Sírius Gomes
+
+
+
+    Find source code of this API [here](https://github.com/siriusgomes/siriusgomes-cs497-fall-2015)
+host: siriusgomes-cs497-api.herokuapp.com
+#host: localhost:3000
+basePath: /
 schemes:
-- "https"
+#  - http
+  - https
 consumes:
-- "application/json"
+  - application/json
 produces:
-- "application/json"
-- "text/plain"
+  - application/json
+  - text/plain
 paths:
-  /:
+  '/':
     get:
-      parameters: []
       responses:
-        200:
-          description: "Shows the hello world page"
-  /products:
+        '200':
+          description: Shows the hello world page
+          
+
+  '/products':
     get:
+      tags:
+        - product
+      summary: List all products for the user of the token
       parameters:
-      - name: "Authorization"
-        in: "header"
-        description: "Authorization Token"
-        required: true
-        type: "string"
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
       responses:
-        200:
-          description: "List the products for the user of the token"
+        '200':
+          description: List of products for the user of the token
+          schema: 
+            type: array
+            $ref: '#/definitions/Product'
+    post:
+      tags:
+        - product
+      summary: Add a new product
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+        - in: body
+          name: product
+          description: Product object that will be added 
+          required: true
           schema:
-            $ref: "#/definitions/Product"
+            $ref: '#/definitions/Product'
+      responses:
+        '201':
+          description: Created product.
+      
+            
+  '/products/{product_id}':
+    get:
+      tags:
+        - product
+      parameters:
+        - in: path
+          name: product_id
+          description: Product Id
+          required: true
+          type: integer
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+          
+      responses:
+        '200':
+          description: Product with specified id for the user of the token
+          schema: 
+            $ref: '#/definitions/Product'
+    put:
+      tags:
+        - product
+      summary: Update an existing product
+      parameters:   
+        - in: path
+          name: product_id
+          description: Product Id
+          required: true
+          type: integer
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+        - in: body
+          name: product
+          description: Product information that needs to be updated
+          required: false
+          schema:
+            $ref: '#/definitions/Product'
+      responses:
+        '200':
+          description: Updated product
+  '/orders':
+    get:
+      tags:
+        - order
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+      responses:
+        '200':
+          description: List of products for the user of the token
+          schema: 
+            $ref: '#/definitions/Order'
+    post:
+      tags:
+        - order
+      summary: Add a new order
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+        - in: body
+          name: order
+          description: Order object that will be added 
+          required: true
+          schema:
+            $ref: '#/definitions/Order'
+      responses:
+        '201':
+          description: Created order.
+  '/orders/{order_id}':
+    get:
+      tags:
+        - order
+      parameters:
+        - in: path
+          name: order_id
+          description: Order Id
+          required: true
+          type: integer
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+          
+      responses:
+        '200':
+          description: Order with specified id for the user of the token
+          schema: 
+            $ref: '#/definitions/Order'
+  '/reports/total_orders/{from}/{to}':
+    get:
+      tags:
+        - report
+      parameters:
+        - in: path
+          name: from
+          description: Date from in format yyyy-mm-dd
+          required: true
+          type: string
+        - in: path
+          name: to
+          description: Date from in format yyyy-mm-dd
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+      responses:
+        '200':
+          description: Total sold in value for the user of the token in the period specified.
+  '/reports/total_sold_product/{product_id}':
+    get:
+      tags:
+        - report
+      parameters:
+        - in: path
+          name: product_id
+          description: Product Id
+          required: true
+          type: integer
+        - name: Authorization
+          in: header
+          type: string
+          description: Authorization Token
+          required: true
+      responses:
+        '200':
+          description: Total sold in value and quantity for the product specified.
+                  
+    
 definitions:
   Product:
-    type: "object"
+    type: object
     properties:
-      id:
-        type: "integer"
-        description: "Product Id."
       name:
-        type: "string"
-        description: "Name of the product."
+        type: string
+        description: Name of the product.
       category:
-        type: "string"
-        description: "Category of the product."
+        type: string
+        description: Category of the product.
       price:
-        type: "number"
-        format: "float"
-        description: "Price of the product."
+        type: number
+        format: float
+        description: Price of the product.
       stock:
-        type: "integer"
-        description: "Quantity in stock."
+        type: integer
+        description: Quantity in stock.
+  Order:
+    type: object
+    properties:
+      #total_price:
+      #  type: number
+      #  format: float
+      #  description: Total price of the order.
+      user_id:
+        type: integer
+        description: User that made the order.
+      products_list:
+        type: array
+        items:
+          $ref: '#/definitions/ProductOrder'
+  ProductOrder:
+    type: object
+    properties:
+      #order_id:
+      #  type: object
+      #  items: 
+      #  $ref: '#/definitions/Order'
+      product_id:
+        type: integer
+        description: Product Id
+      quantity:
+        type: integer
+        description: Quantity purchased.
+  
+            
+        
+        
+
