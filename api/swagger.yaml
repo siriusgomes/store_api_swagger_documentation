@@ -1,0 +1,57 @@
+---
+swagger: "2.0"
+info:
+  description: "**This is the documentation for the \"Store API\" project. **\nIt\
+    \ was created and hosted in Heroku by Sírius Gomes\n\n\nFind source code of this\
+    \ API [here](https://github.com/siriusgomes/siriusgomes-cs497-fall-2015)\n"
+  version: "1.0.0"
+  title: "Store API on Heroku for CS497 - Enterprise Web Development"
+host: "siriusgomes-cs497-api.herokuapp.com"
+basePath: "/"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+- "text/plain"
+paths:
+  /:
+    get:
+      parameters: []
+      responses:
+        200:
+          description: "Shows the hello world page"
+  /products:
+    get:
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Authorization Token"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "List the products for the user of the token"
+          schema:
+            $ref: "#/definitions/Product"
+definitions:
+  Product:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Product Id."
+      name:
+        type: "string"
+        description: "Name of the product."
+      category:
+        type: "string"
+        description: "Category of the product."
+      price:
+        type: "number"
+        format: "float"
+        description: "Price of the product."
+      stock:
+        type: "integer"
+        description: "Quantity in stock."

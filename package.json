@@ -1,0 +1,16 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "**This is the documentation for the \"Store API\" project. **\nIt was created and hosted in Heroku by Sírius Gomes\n\n\nFind source code of this API [here](https://github.com/siriusgomes/siriusgomes-cs497-fall-2015)",
+  "main": "index.js",
+  "keywords": [
+    "swagger"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.9.*"
+  }
+}
