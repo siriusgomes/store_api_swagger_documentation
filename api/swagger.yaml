@@ -27,7 +27,7 @@ paths:
       responses:
         '200':
           description: Shows the hello world page
-          
+
 
   '/products':
     get:
@@ -43,7 +43,7 @@ paths:
       responses:
         '200':
           description: List of products for the user of the token
-          schema: 
+          schema:
             type: array
             $ref: '#/definitions/Product'
     post:
@@ -58,19 +58,20 @@ paths:
           required: true
         - in: body
           name: product
-          description: Product object that will be added 
+          description: Product object that will be added
           required: true
           schema:
             $ref: '#/definitions/Product'
       responses:
         '201':
           description: Created product.
-      
-            
+
+
   '/products/{product_id}':
     get:
       tags:
         - product
+      summary: Shows the product according to the product_id
       parameters:
         - in: path
           name: product_id
@@ -82,17 +83,17 @@ paths:
           type: string
           description: Authorization Token
           required: true
-          
+
       responses:
         '200':
           description: Product with specified id for the user of the token
-          schema: 
+          schema:
             $ref: '#/definitions/Product'
     put:
       tags:
         - product
       summary: Update an existing product
-      parameters:   
+      parameters:
         - in: path
           name: product_id
           description: Product Id
@@ -106,16 +107,19 @@ paths:
         - in: body
           name: product
           description: Product information that needs to be updated
-          required: false
+          required: true
           schema:
             $ref: '#/definitions/Product'
       responses:
         '200':
           description: Updated product
+          schema:
+            $ref: '#/definitions/Product'
   '/orders':
     get:
       tags:
         - order
+      summary: List all orders for the user of the token
       parameters:
         - name: Authorization
           in: header
@@ -124,8 +128,8 @@ paths:
           required: true
       responses:
         '200':
-          description: List of products for the user of the token
-          schema: 
+          description: List of orders for the user of the token
+          schema:
             $ref: '#/definitions/Order'
     post:
       tags:
@@ -139,17 +143,20 @@ paths:
           required: true
         - in: body
           name: order
-          description: Order object that will be added 
+          description: Order object that will be added
           required: true
           schema:
             $ref: '#/definitions/Order'
       responses:
         '201':
           description: Created order.
+          schema:
+            $ref: '#/definitions/Order'
   '/orders/{order_id}':
     get:
       tags:
         - order
+      summary: Shows the order according to the order_id
       parameters:
         - in: path
           name: order_id
@@ -161,11 +168,11 @@ paths:
           type: string
           description: Authorization Token
           required: true
-          
+
       responses:
         '200':
           description: Order with specified id for the user of the token
-          schema: 
+          schema:
             $ref: '#/definitions/Order'
   '/reports/total_orders/{from}/{to}':
     get:
@@ -208,8 +215,6 @@ paths:
       responses:
         '200':
           description: Total sold in value and quantity for the product specified.
-                  
-    
 definitions:
   Product:
     type: object
@@ -246,7 +251,7 @@ definitions:
     properties:
       #order_id:
       #  type: object
-      #  items: 
+      #  items:
       #  $ref: '#/definitions/Order'
       product_id:
         type: integer
@@ -254,8 +259,3 @@ definitions:
       quantity:
         type: integer
         description: Quantity purchased.
-  
-            
-        
-        
-
